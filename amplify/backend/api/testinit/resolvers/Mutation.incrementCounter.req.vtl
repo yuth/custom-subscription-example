@@ -1,0 +1,19 @@
+#set($exprValues = $util.dynamodb.toMapValues({":incr": 1}))
+#set($exprNames = { "#counter": "counter" })
+#set( $update = {
+"expression": "SET #counter = #counter + :incr",
+  "expressionValues": $exprValues,
+  "expressionNames": $exprNames
+} )
+
+{
+  "version": "2018-05-29",
+  "operation": "UpdateItem",
+  "key": #if( $modelObjectKey ) $util.toJson($modelObjectKey) #else {
+  "id": {
+      "S": $util.toJson($context.args.id)
+  }
+} #end,
+  "update": $util.toJson($update),
+  "condition": $util.toJson($condition)
+}

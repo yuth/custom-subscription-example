@@ -1,0 +1,18 @@
+type Thing @model {
+  id: ID!
+  counter: Int
+}
+
+input UpdateThingInput {
+  id: ID!
+  counter: Int
+}
+
+type Mutation {
+  incrementCounter(id: ID!): Thing
+}
+
+type Subscription {
+  didUpdate: Thing @aws_subscribe(mutations: ["updateThing"])
+  didIncrementCounter: Thing @aws_subscribe(mutations: ["incrementCounter"])
+}
